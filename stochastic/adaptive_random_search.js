@@ -93,7 +93,7 @@ const takeSteps = ({ bounds, current, stepSize, bigStepSize }) => {
 * @param {Number} iterMult: iteration multiplier
 * @param {Number} maxNoImprov: max val if no improvement of count
 * @returns {Number} large step size
-* @called 
+* @called
 **/
 const adaptiveRandomSearch = ({ maxIter, bounds, initFactor, sFactor, lFactor,
   iterMult, maxNoImprov }) => {
@@ -128,18 +128,11 @@ const adaptiveRandomSearch = ({ maxIter, bounds, initFactor, sFactor, lFactor,
 
     return current
   } catch (e) {
-    throw new Error(`Take steps: ${e}`)
+    throw new Error(`Adaptive random search: ${e}`)
   }
 }
 
 module.exports = { adaptiveRandomSearch }
-
-
-
-
-
-
-
 
 
 /* END */

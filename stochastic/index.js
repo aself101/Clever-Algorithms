@@ -1,14 +1,21 @@
 /*******************************************************************************
 Stoachistic Algorithms
 Random Search
+Adaptive Random Search
 *******************************************************************************/
 const { randomSearch } = require('./random_search')
 const { adaptiveRandomSearch } = require('./adaptive_random_search')
-
+const { stochasticHillSearch } = require('./stochastic_hill_climbing')
 
 const main = () => {
   try {
-
+    // Problem configuration
+    const numBits = 64
+    // Algorithm configuration
+    const maxIter = 1000
+    console.log('Starting')
+    const best = stochasticHillSearch({ maxIter, numBits })
+    console.log(`Done. Best Solution: Cost=${best.cost}, Vector=${best.vector.join('')}`)
   } catch (e) {
     throw new Error(`Main() Random search: ${e}`)
   }
@@ -18,7 +25,8 @@ main()
 
 module.exports = {
   adaptiveRandomSearch,
-  randomSearch
+  randomSearch,
+  stochasticHillSearch
 }
 
 
@@ -40,6 +48,9 @@ module.exports = {
   console.log(`Done. Best Solution: Cost=${best.cost}, Vector=${best.vector}`)
 
   ** ADAPTIVE RANDOM SEARCH **
+  The example problem is an instance of a continuous function optimization that
+  seeks min f (x) where f = i=1 x 2 i, −5.0 ≤ x i ≤ 5.0 and n = 2. The optimal
+  solution for this basin function is (v 0 , . . . , v n−1 ) = 0.0.
   // Problem configuration
   const problemSize = 2
   const searchSpace = new Array(problemSize).fill([-5,5])

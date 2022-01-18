@@ -32,34 +32,55 @@ const randomVector = (minmax) => {
 * @param {Number} max: max value of a minmax
 * @returns {Number} Random value from minmax
 * @called randomVector()
+  Stoachistic: adaptive_random_search.js
 **/
 const randomInBounds = ({ min, max }) => {
   return min + ((max - min) * Math.random())
 }
 
-module.exports = {
-  objectiveFunction,
-  randomInBounds,
-  randomVector
+/**
+* oneMax: Sums vals if array is 1
+* @param {Array} vector: Array of misc 0,1 values
+* @returns {Number} Sum from array of misc 0,1 values
+* @called Stoachistic: [stochastic_hill_climbing.js]
+**/
+const oneMax = (vector) => {
+  return vector.reduce((acc, cur, i) => {
+    return acc + (cur === '1' ? 1 : 0)
+  },0)
 }
 
+/**
+* randomBitstring: Generates a bitstring of random values 0, 1
+* @param {Number} numBits: Length of bitstring
+* @returns {Array} Random 1D bitstring 0,1
+* @called Stoachistic: [stochastic_hill_climbing.js]
+**/
+const randomBitstring = (numBits) => {
+  return new Array(numBits).fill('0').map((a,i) => {
+    if (Math.random() < 0.5) return '1'
+    return a
+  })
+}
 
+/**
+* randomInteger: Generates a random number between 1...n
+* @param {Number} n: number max
+* @returns {Number} Random number between 1...n
+* @called Stoachistic: [stochastic_hill_climbing.js]
+**/
+const randomInteger = (n) => {
+  return Math.floor(Math.random() * n)
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+module.exports = {
+  objectiveFunction,
+  oneMax,
+  randomBitstring,
+  randomInBounds,
+  randomInteger,
+  randomVector
+}
 
 
 
