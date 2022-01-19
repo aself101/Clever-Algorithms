@@ -2,6 +2,16 @@
   General utility functions used throughout the packages
 */
 
+const BERLIN_52 = [[565,575],[25,185],[345,750],[945,685],[845,655],
+[880,660],[25,230],[525,1000],[580,1175],[650,1130],[1605,620],
+[1220,580],[1465,200],[1530,5],[845,680],[725,370],[145,665],
+[415,635],[510,875],[560,365],[300,465],[520,585],[480,415],
+[835,625],[975,580],[1215,245],[1320,315],[1250,400],[660,180],
+[410,250],[420,555],[575,665],[1150,1160],[700,580],[685,595],
+[685,610],[770,610],[795,645],[720,635],[760,650],[475,960],
+[95,260],[875,920],[700,500],[555,815],[830,485],[1170,65],
+[830,610],[605,625],[595,360],[1340,725],[1740,245]]
+
 /**
 * objectiveFunction: Returns values squared
 * @param {Array} vector: Array of misc values
@@ -70,15 +80,52 @@ const randomBitstring = (numBits) => {
 * @called Stoachistic: [stochastic_hill_climbing.js]
 **/
 const randomInteger = (n) => {
-  return Math.floor(Math.random() * n)
+  return Math.round(Math.random() * n)
 }
 
+/**
+* euclid2D: Euclidean distance calculation
+* @param {Array} c1: 1D array of a location
+* @param {Array} c2: 1D array of a location
+* @returns {Number} Distance between two locations
+* @called Stoachistic: [stochastic_hill_climbing.js]
+**/
+const euclid2D = ({ c1, c2 }) => {
+  return Math.round(Math.sqrt(
+    Math.pow(c1[0]-c2[0], 2) + Math.pow(c1[1]-c2[1], 2)
+  ))
+}
+
+/**
+* randomPermutation: Generates a random permutation of indexes
+* @param {Array} cities: 2D array of all available cities
+* @returns {Array} 1D array of random indexes
+* @called
+**/
+const randomPermutation = (cities) => {
+  try {
+    let perm = new Array(cities.length).fill(0).map((a,i) => i)
+    return perm.map((a,i,p) => {
+      let r = randomInteger(perm.length-1 - i) + i
+      a = p[r]
+      p[r] = p[i]
+      return a
+    })
+  } catch (e) {
+    throw new Error(`Random permutation: ${e}`)
+  }
+}
+
+
 module.exports = {
+  BERLIN_52,
+  euclid2D,
   objectiveFunction,
   oneMax,
   randomBitstring,
   randomInBounds,
   randomInteger,
+  randomPermutation,
   randomVector
 }
 
