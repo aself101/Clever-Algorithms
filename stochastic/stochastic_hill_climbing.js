@@ -37,7 +37,7 @@ const randomNeighbor = (bitstring) => {
 * @returns {Object} candidate: Best candidate solution: cost, bitstring
 * @called
 **/
-const stochasticHillSearch = ({ maxIter, numBits }) => {
+const stochasticHillClimbingSearch = ({ maxIter, numBits }) => {
   try {
     let candidate = { vector: randomBitstring(numBits) }
     candidate.cost = oneMax(candidate.vector)
@@ -57,6 +57,6 @@ const stochasticHillSearch = ({ maxIter, numBits }) => {
   }
 }
 
-module.exports = { stochasticHillSearch }
+module.exports = { stochasticHillClimbingSearch }
 
 /* END */

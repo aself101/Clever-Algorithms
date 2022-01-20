@@ -10,10 +10,11 @@ Heuristics: Iterated Local Search was designed for and has been predominately
 applied to discrete domains, such as combinatorial optimization
 problems.
 *******************************************************************************/
-const { euclid2D, randomInteger, randomPermutation } = require('../utils')
+const { euclid2D, randomInteger, randomPermutation,
+  stochasticTwoOpt } = require('../utils')
 
 /**
-* cost: Calculates the cost between two cities
+* cost: Calculates the cost of route
 * @param {Array} permutation: Random permutation of a city
 * @param {Array} cities: 2D array of all available cities
 * @returns {Number} cost between two locations
@@ -27,37 +28,6 @@ const cost = ({ permutation, cities }) => {
     },0)
   } catch (e) {
     throw new Error(`Cost: ${e}`)
-  }
-}
-
-/**
-* stochasticTwoOpt: Generates a new random permutation
-* @param {Array} permutation: permutation of random indexes
-* @returns {Array} 1D array of random indexes
-* @called
-**/
-const stochasticTwoOpt = (permutation) => {
-  try {
-    let perm = [ ...permutation ]
-    let c1 = randomInteger(perm.length-1)
-    let c2 = randomInteger(perm.length-1)
-    let exclude = [c1]
-    if (c1 === 0) exclude.push(perm.length-1)
-    else exclude.push(c1-1)
-    if (c1 === perm.length-1) exclude.push(0)
-    else exclude.push(c1+1)
-    while (exclude.includes(c2)) c2 = randomInteger(perm.length-1)
-    if (c2 < c1) {
-      c1 = c2
-      c2 = c1
-    }
-    return [
-      ...perm.slice(0,c1),
-      ...perm.slice(c1,c2).reverse(),
-      ...perm.slice(c2,perm.length)
-    ]
-  } catch (e) {
-    throw new Error(`Stochastic two opt: ${e}`)
   }
 }
 
@@ -142,7 +112,7 @@ const iteratedLocalSearch = ({ cities, maxIter, maxNoImprov }) => {
       let candidate = perturbation({ cities, best })
       candidate = localSearch({ best: candidate, cities, maxNoImprov })
       if (candidate.cost < best.cost) best = candidate
-      //console.log(`> Iteration: ${i+1}, Best: ${best.cost}`)
+      console.log(`> Iteration: ${i+1}, Best: ${best.cost}`)
     }
     return best
   } catch (e) {

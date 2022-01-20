@@ -2,16 +2,6 @@
   General utility functions used throughout the packages
 */
 
-const BERLIN_52 = [[565,575],[25,185],[345,750],[945,685],[845,655],
-[880,660],[25,230],[525,1000],[580,1175],[650,1130],[1605,620],
-[1220,580],[1465,200],[1530,5],[845,680],[725,370],[145,665],
-[415,635],[510,875],[560,365],[300,465],[520,585],[480,415],
-[835,625],[975,580],[1215,245],[1320,315],[1250,400],[660,180],
-[410,250],[420,555],[575,665],[1150,1160],[700,580],[685,595],
-[685,610],[770,610],[795,645],[720,635],[760,650],[475,960],
-[95,260],[875,920],[700,500],[555,815],[830,485],[1170,65],
-[830,610],[605,625],[595,360],[1340,725],[1740,245]]
-
 /**
 * objectiveFunction: Returns values squared
 * @param {Array} vector: Array of misc values
@@ -77,7 +67,7 @@ const randomBitstring = (numBits) => {
 * randomInteger: Generates a random number between 1...n
 * @param {Number} n: number max
 * @returns {Number} Random number between 1...n
-* @called Stoachistic: [stochastic_hill_climbing.js]
+* @called Stoachistic: [stochastic_hill_climbing.js, iterated_local_search.js]
 **/
 const randomInteger = (n) => {
   return Math.round(Math.random() * n)
@@ -88,7 +78,8 @@ const randomInteger = (n) => {
 * @param {Array} c1: 1D array of a location
 * @param {Array} c2: 1D array of a location
 * @returns {Number} Distance between two locations
-* @called Stoachistic: [stochastic_hill_climbing.js]
+* @called stochastic: [guided_local_search.js, variable_neighborhood_search.js,
+  iterated_local_search.js]
 **/
 const euclid2D = ({ c1, c2 }) => {
   return Math.round(Math.sqrt(
@@ -100,7 +91,8 @@ const euclid2D = ({ c1, c2 }) => {
 * randomPermutation: Generates a random permutation of indexes
 * @param {Array} cities: 2D array of all available cities
 * @returns {Array} 1D array of random indexes
-* @called
+* @called stochastic: [guided_local_search.js, variable_neighborhood_search.js,
+  iterated_local_search.js]
 **/
 const randomPermutation = (cities) => {
   try {
@@ -116,9 +108,51 @@ const randomPermutation = (cities) => {
   }
 }
 
+/**
+* stochasticTwoOpt: Generates a new random permutation
+* @param {Array} permutation: permutation of random indexes
+* @returns {Array} 1D array of random indexes
+* @called stochastic: [guided_local_search.js, variable_neighborhood_search.js,
+  iterated_local_search.js]
+**/
+const stochasticTwoOpt = (permutation) => {
+  try {
+    let perm = [ ...permutation ]
+    let c1 = randomInteger(perm.length-1)
+    let c2 = randomInteger(perm.length-1)
+    let exclude = [c1]
+    if (c1 === 0) exclude.push(perm.length-1)
+    else exclude.push(c1-1)
+    if (c1 === perm.length-1) exclude.push(0)
+    else exclude.push(c1+1)
+    while (exclude.includes(c2)) c2 = randomInteger(perm.length-1)
+    if (c2 < c1) {
+      c1 = c2
+      c2 = c1
+    }
+    return [
+      ...perm.slice(0,c1),
+      ...perm.slice(c1,c2).reverse(),
+      ...perm.slice(c2,perm.length)
+    ]
+  } catch (e) {
+    throw new Error(`Stochastic two opt: ${e}`)
+  }
+}
+
+/**
+* range: Generates a range of numbers startAt...size
+* @param {Number} size: size of the array range
+* @param {Number} startAt: value to start the array, default 0
+* @returns {Array} 1D array of values startAt...size
+* @called stochastic: [variable_neighborhood_search.js]
+* @notes Trying to mimic Ruby's range variable type
+**/
+const range = ({ size, startAt=0 }) => {
+  return [...Array(size).keys()].map((i) => i + startAt)
+}
 
 module.exports = {
-  BERLIN_52,
   euclid2D,
   objectiveFunction,
   oneMax,
@@ -126,7 +160,9 @@ module.exports = {
   randomInBounds,
   randomInteger,
   randomPermutation,
-  randomVector
+  randomVector,
+  range,
+  stochasticTwoOpt
 }
 
 
