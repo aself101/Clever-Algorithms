@@ -75,8 +75,8 @@ const randomInteger = (n) => {
 
 /**
 * euclid2D: Euclidean distance calculation
-* @param {Array} c1: 1D array of a location
-* @param {Array} c2: 1D array of a location
+* @param {Array} c1: 1D array of a location(2 vals)
+* @param {Array} c2: 1D array of a location(2 vals)
 * @returns {Number} Distance between two locations
 * @called stochastic: [guided_local_search.js, variable_neighborhood_search.js,
   iterated_local_search.js]
@@ -85,6 +85,25 @@ const euclid2D = ({ c1, c2 }) => {
   return Math.round(Math.sqrt(
     Math.pow(c1[0]-c2[0], 2) + Math.pow(c1[1]-c2[1], 2)
   ))
+}
+/**
+* euclideanDistance: Euclidean distance calculation for n vars in a vector
+* @param {Array} c1: 1D array of n values
+* @param {Array} c2: 1D array of n values
+* @returns {Number} Distance between two vectors
+* @called stochastic: [scatter_search.js]
+**/
+const euclideanDistance = ({ c1, c2 }) => {
+  try {
+    let sum = 0
+    c1.map((c,i) => {
+      sum += Math.pow(c1[i]-c2[i], 2)
+      return c
+    })
+    return Math.sqrt(sum)
+  } catch (e) {
+    throw new Error(`Euclidea distance: ${e}`)
+  }
 }
 
 /**
@@ -152,8 +171,25 @@ const range = ({ size, startAt=0 }) => {
   return [...Array(size).keys()].map((i) => i + startAt)
 }
 
+/**
+* arrayDifference: Removes values in arr1 that are in arr2
+* @param {Array} arr1: array to remove values from
+* @param {Array} arr2: array holding values to be removed from arr1
+* @returns {Array} new array difference between arr1 and arr2
+* @called stochastic: [greedy_randomized_adaptive_search.js, scatter_search.js]
+* @notes Trying to mimic Ruby's array subtraction method
+**/
+const arrayDifference = ({ arr1, arr2 }) => {
+  return arr1.map((c,i) => {
+    if (arr2.includes(c)) return null
+    return c
+  }).filter((c) => c !== null)
+}
+
 module.exports = {
+  arrayDifference,
   euclid2D,
+  euclideanDistance,
   objectiveFunction,
   oneMax,
   randomBitstring,

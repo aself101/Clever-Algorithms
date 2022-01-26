@@ -39,7 +39,7 @@ const cost = ({ perm, cities }) => {
 * @param {Array} cities: 2D array of all available cities
 * @param {Number} maxNoImprov: Determines when the search can no longer improve
 * @param {Number} neighborhood: Neighborhood value 1...n
-* @returns {Number} distance of permutation route
+* @returns {Object} best candidate
 * @called
 **/
 const localSearch = ({ best, cities, maxNoImprov, neighborhood }) => {
@@ -108,21 +108,6 @@ const variableNeighborhoodSearch = ({ cities, neighborhoods, maxNoImprov,
   }
 }
 
-
 module.exports = { variableNeighborhoodSearch }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* END */

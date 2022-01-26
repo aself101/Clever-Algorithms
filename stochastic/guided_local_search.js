@@ -11,6 +11,7 @@ function that guides exploration away from solutions with features
 present in discovered local optima.
 *******************************************************************************/
 const { euclid2D, randomPermutation, stochasticTwoOpt } = require('../utils')
+
 /**
 * augmentedCost: augments the cost of the route determined by the use of penalties
 * @param {Array} permutation: Current route permutation
@@ -180,7 +181,6 @@ const guidedLocalSearch = ({ maxIter, cities, maxNoImprov, lambda }) => {
     throw new Error(`Guided local search: ${e}`)
   }
 }
-
 
 module.exports = { guidedLocalSearch }
 

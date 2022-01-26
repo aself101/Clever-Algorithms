@@ -6,27 +6,38 @@ const { BERLIN_52 } = require('./constants')
 const { range } = require('./utils')
 const {
   adaptiveRandomSearch,
+  greedyRandomizedAdaptiveSearch,
   guidedLocalSearch,
   iteratedLocalSearch,
   randomSearch,
+  scatterSearch,
   stochasticHillClimbingSearch,
   variableNeighborhoodSearch
 } = require('./stochastic')
 
-
 const main = () => {
   try {
+    // Problem configuration
+    const problemSize = 3
+    const bounds = new Array(problemSize).fill([-5,5])
     // Algorithm configuration
-    const maxNoImprov = 50 // Tweak these for better solutions; higher === better
-    const maxNoImprovLs = 70 // Tweak these for better solutions; higher === better
-    const neighborhoods = range({ size: 20, startAt: 1 })
+    const maxIter = 100
+    const maxNoImprov = 30
+    const stepSize = (bounds[0][1]-bounds[0][0]) * 0.005
+    const refSetSize = 10
+    const diverseSetSize = 20
+    const numElite = 5
 
-    const best = variableNeighborhoodSearch({
-      cities: BERLIN_52,
-      neighborhoods,
+    const best = scatterSearch({
+      bounds,
+      maxIter,
+      refSetSize,
+      diverseSetSize,
       maxNoImprov,
-      maxNoImprovLs
+      stepSize,
+      maxElite: numElite
     })
+
     console.log(`Done. Best Solution: ${best.cost}, Vector: ${best.vector}`)
 
     return best
@@ -104,5 +115,34 @@ main()
   const lambda = alpha * (localSearchOptima / BERLIN_52.length)
 
   const best = guidedLocalSearch({ maxIter, cities: BERLIN_52, maxNoImprov, lambda })
+  console.log(`Done. Best Solution: ${best.cost}, Vector: ${best.vector}`)
+
+  ** VARIABLE NEIGHBORHOOD SEARCH **
+  // Algorithm configuration
+  const maxNoImprov = 50 // Tweak these for better solutions; higher === better
+  const maxNoImprovLs = 70 // Tweak these for better solutions; higher === better
+  const neighborhoods = range({ size: 20, startAt: 1 })
+
+  const best = variableNeighborhoodSearch({
+    cities: BERLIN_52,
+    neighborhoods,
+    maxNoImprov,
+    maxNoImprovLs
+  })
+  console.log(`Done. Best Solution: ${best.cost}, Vector: ${best.vector}`)
+
+  ** GREEDY ADAPTIVE RANDOMIZED SEARCH **
+  // Algorithm configuration
+  const maxIter = 15000
+  const maxNoImprov = 150
+  const greedinessFactor = 0.25 // (0 too greedy, 1 to general)
+
+  const best = greedyRandomizedAdaptiveSearch({
+    cities: BERLIN_52,
+    maxIter,
+    maxNoImprov,
+    alpha: greedinessFactor
+  })
+
   console.log(`Done. Best Solution: ${best.cost}, Vector: ${best.vector}`)
 */
