@@ -16,6 +16,7 @@ const { guidedLocalSearch } = require('./guided_local_search')
 const { variableNeighborhoodSearch } = require('./variable_neighborhood_search')
 const { greedyRandomizedAdaptiveSearch } = require('./greedy_randomized_adaptive_search')
 const { scatterSearch } = require('./scatter_search')
+const { tabuSearch } = require('./tabu_search')
 
 module.exports = {
   adaptiveRandomSearch,
@@ -25,6 +26,7 @@ module.exports = {
   randomSearch,
   scatterSearch,
   stochasticHillClimbingSearch,
+  tabuSearch,
   variableNeighborhoodSearch
 }
 

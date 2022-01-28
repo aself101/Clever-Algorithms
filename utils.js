@@ -128,6 +128,33 @@ const randomPermutation = (cities) => {
 }
 
 /**
+* randomPerm: Generates a random permutation of values in an array
+* @param {Array} arr: array of values
+* @param {Number} size: size of the random array
+* @returns {Array} 1D array of random values
+* @called evolutionary: [GeneticAlgorithm.js]
+**/
+const randomPerm = ({ arr, size }) => {
+  try {
+    let randomVals = []
+    arr.map((a,i,p) => {
+      let r = randomInteger(arr.length-1 - i) + i
+      a = p[r]
+      p[r] = p[i]
+      randomVals.push(a)
+      return a
+    })
+    for (let i = 0; i < size - arr.length; i++) {
+      let r = arr[randomInteger(arr.length-1)]
+      randomVals.push(r)
+    }
+    return randomVals
+  } catch (e) {
+    throw new Error(`Random perm: ${e}`)
+  }
+}
+
+/**
 * stochasticTwoOpt: Generates a new random permutation
 * @param {Array} permutation: permutation of random indexes
 * @returns {Array} 1D array of random indexes
@@ -195,6 +222,7 @@ module.exports = {
   randomBitstring,
   randomInBounds,
   randomInteger,
+  randomPerm,
   randomPermutation,
   randomVector,
   range,
