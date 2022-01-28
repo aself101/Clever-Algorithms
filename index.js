@@ -12,35 +12,14 @@ const {
   randomSearch,
   scatterSearch,
   stochasticHillClimbingSearch,
+  tabuSearch,
   variableNeighborhoodSearch
 } = require('./stochastic')
 
+
 const main = () => {
   try {
-    // Problem configuration
-    const problemSize = 3
-    const bounds = new Array(problemSize).fill([-5,5])
-    // Algorithm configuration
-    const maxIter = 100
-    const maxNoImprov = 30
-    const stepSize = (bounds[0][1]-bounds[0][0]) * 0.005
-    const refSetSize = 10
-    const diverseSetSize = 20
-    const numElite = 5
 
-    const best = scatterSearch({
-      bounds,
-      maxIter,
-      refSetSize,
-      diverseSetSize,
-      maxNoImprov,
-      stepSize,
-      maxElite: numElite
-    })
-
-    console.log(`Done. Best Solution: ${best.cost}, Vector: ${best.vector}`)
-
-    return best
   } catch (e) {
     throw new Error(`Main() Stochastic: ${e}`)
   }
@@ -49,7 +28,7 @@ const main = () => {
 main()
 
 /*
-  ****************************** Testing ******************************
+  ****************************** Testing Stochastic Algos ******************************
   ** RANDOM SEARCH **
   The example problem is an instance of a continuous function optimization that
   seeks min f (x) where f = i=1 x 2 i, −5.0 ≤ x i ≤ 5.0 and n = 2. The optimal
@@ -145,4 +124,41 @@ main()
   })
 
   console.log(`Done. Best Solution: ${best.cost}, Vector: ${best.vector}`)
+
+  ** SCATTER SEARCH **
+  // Problem configuration
+  const problemSize = 3
+  const bounds = new Array(problemSize).fill([-5,5])
+  // Algorithm configuration
+  const maxIter = 100
+  const maxNoImprov = 30
+  const stepSize = (bounds[0][1]-bounds[0][0]) * 0.005
+  const refSetSize = 10
+  const diverseSetSize = 20
+  const numElite = 5
+
+  const best = scatterSearch({
+    bounds,
+    maxIter,
+    refSetSize,
+    diverseSetSize,
+    maxNoImprov,
+    stepSize,
+    maxElite: numElite
+  })
+
+  console.log(`Done. Best Solution: ${best.cost}, Vector: ${best.vector}`)
+
+  ** TABU SEARCH **
+  // Algorithm configuration
+  const maxIter = 10000
+  const tabuListSize = 15
+  const maxCandidates = 50
+  const best = tabuSearch({
+    cities: BERLIN_52,
+    tabuListSize,
+    candidateListSize: maxCandidates,
+    maxIter
+  })
+  console.log(`Done. Best Solution: Cost=${best.cost}, Vector=${best.vector}`)
 */

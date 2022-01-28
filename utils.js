@@ -15,7 +15,7 @@ const objectiveFunction = (vector) => {
 }
 
 /**
-* randomVector: Generates a vector of random values from a mix max 2d array
+* randomVector: Generates a vector of random values from a min-max 2d array
 * @param {Array} minmax: 2D vector of min-max values; i.e [-5,5]
 * @returns {Array} Random 1D vector of misc values
 * @called Stoachistic: [random_search.js]
@@ -32,7 +32,7 @@ const randomVector = (minmax) => {
 * @param {Number} max: max value of a minmax
 * @returns {Number} Random value from minmax
 * @called randomVector()
-  Stoachistic: adaptive_random_search.js
+  Stoachistic: [adaptive_random_search.js]
 **/
 const randomInBounds = ({ min, max }) => {
   return min + ((max - min) * Math.random())

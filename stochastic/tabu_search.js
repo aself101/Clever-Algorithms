@@ -90,7 +90,7 @@ const isTabu = ({ permutation, tabuList }) => {
 * @param {Array} best: current best candidate solution
 * @param {Array} tabulist: list of edges that should not be revisted
 * @param {Array} cities: 2D array of all available cities
-* @returns {Object} candidate solution and edges
+* @returns {Object} candidate solution and parent edges
 * @called
 **/
 const generateCandidate = ({ best, tabuList, cities }) => {
