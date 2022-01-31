@@ -1,6 +1,6 @@
 /*******************************************************************************
 Clever Algorithms, pg 82
-Reactive Tabu Search: TThe objective of Tabu Search is to avoid cycles while
+Reactive Tabu Search: The objective of Tabu Search is to avoid cycles while
 applying a local search technique. The Reactive Tabu Search addresses this
 objective by explicitly monitoring the search and reacting to the occurrence of
 cycles and their repetition by adapting the tabu tenure (tabu list size).
@@ -9,7 +9,7 @@ to automate the process by which a practitioner configures a search
 procedure by monitoring its online behavior and to use machine learning
 techniques to adapt a techniques configuration.
 *******************************************************************************/
-const { euclid2D, randomPermutation } = require('../utils')
+const { euclid2D, randomPermutation, randomInteger } = require('../utils')
 
 /**
 * cost: Calculates the cost of route
@@ -164,24 +164,162 @@ const generateCandidate = ({ best, cities }) => {
     let [vector, edges] = tabuStochasticTwoOpt(best.vector)
     candidate.vector = vector
     candidate.cost = cost({ permutation: candidate.vector, cities })
-    return { candidate, edges }
+    return [candidate, edges]
   } catch (e) {
     throw new Error(`Generate candidate: ${e}`)
   }
 }
 
+/**
+* getCandidateEntry: Returns a visited entry path from the candidate solution
+* @param {Array} visitedList: List of visied edges
+* @param {Array} permutation: current permutation routes
+* @returns {Object} entry or null depending on edgelist equivalency
+* @called
+**/
+const getCandidateEntry = ({ visitedList, permutation }) => {
+  try {
+    const edgeList = toEdgeList(permutation)
+    for (let entry of visitedList) {
+      if (equivalent({ el1: edgeList, el2: entry.edgeList })) return entry
+    }
+    return null
+  } catch (e) {
+    throw new Error(`Get candidate entry: ${e}`)
+  }
+}
+
+/**
+* storePermutation: Stores a permutation's edgeList in the visited list
+* @param {Array} visitedList: List of visied edges
+* @param {Array} permutation: current permutation routes
+* @param {Number} iteration: current iteration
+* @returns {Object} entry
+* @called
+**/
+const storePermutation = ({ visitedList, permutation, iteration }) => {
+  try {
+    const entry = {
+      edgeList: toEdgeList(permutation),
+      iter: iteration,
+      visits: 1
+    }
+    visitedList.push(entry)
+    return entry
+  } catch (e) {
+    throw new Error(`Store permutation: ${e}`)
+  }
+}
+
+/**
+* sortNeighborhood: Sorts a neighborhood of candidate solutions and checks whether
+  each path is admissible or tabu
+* @param {Array} candidates: Current candidate solutions
+* @param {Array} tabulist: list of edges that should not be revisted
+* @param {Number} prohibPeriod: period of time a route is prohibited to be visited
+* @param {Number} iteration: current iteration
+* @returns {Array} tabu and admissible solutions
+* @called
+**/
+const sortNeighborhood = ({ candidates, tabuList, prohibPeriod, iteration }) => {
+  try {
+    let tabu = []
+    let admissible = []
+    candidates.map((a,i) => {
+      if (isTabu({ edge: a[1][0], tabuList, iter: iteration, prohibPeriod }) ||
+          isTabu({ edge: a[1][1], tabuList, iter: iteration, prohibPeriod })) {
+          tabu.push(a)
+      } else admissible.push(a)
+      return a
+    })
+    return [tabu, admissible]
+  } catch (e) {
+    throw new Error(`Sort neighborhood: ${e}`)
+  }
+}
+
+/**
+* reactiveTabuSearch: main search function
+* @param {Array} cities: city dataset
+* @param {Array} maxCand: max list of available candidate solutions
+* @param {Number} maxIter: max iterations
+* @param {Number} increase: regulates prohibPeriod
+* @param {Number} decrease: regulates prohibPeriod
+* @returns {Object} Best solution
+* @called
+**/
+const reactiveTabuSearch = ({ cities, maxCand, maxIter, increase, decrease }) => {
+  try {
+    let current = { vector: randomPermutation(cities) }
+    current.cost = cost({ permutation: current.vector, cities })
+    let best = { ...current }
+    let tabuList = []
+    let prohibPeriod = 1
+    let visitedList = []
+    let avgSize = 1
+    let lastChange = 0
+
+    for (let i = 0; i < maxIter; i++) {
+      let candidateEntry = getCandidateEntry({ visitedList, permutation: current.vector })
+
+      if (candidateEntry !== null) {
+        let repetitionInterval = i - candidateEntry.iter
+        candidateEntry.iter = i
+        candidateEntry.visits += 1
+
+        if (repetitionInterval < 2 * (cities.length - 1)) {
+          avgSize = 0.1 * (i - candidateEntry.iter) + 0.9 * avgSize
+          prohibPeriod = (prohibPeriod * increase)
+          lastChange = i
+        }
+      } else storePermutation({ visitedList, permutation: current.vector, iteration: i })
+
+      if (i - lastChange > avgSize) {
+        prohibPeriod = Math.max(prohibPeriod*decrease, 1)
+        lastChange = i
+      }
+
+      let candidates = new Array(maxCand).fill({}).map((a,i) => {
+        return generateCandidate({ best: current, cities })
+      }).sort((a,b) => a[0].cost < b[0].cost ? -1 : 1)
+
+      let [tabu, admissible] = sortNeighborhood({
+        candidates,
+        tabuList,
+        prohibPeriod,
+        iteration: i
+      })
+
+      if (admissible.length < 2) {
+        prohibPeriod = cities.length - 2
+        lastChange = i
+      }
+      let bestMoveEdges = null
+      if (admissible.length === 0) {
+        [current, bestMoveEdges] = tabu[0]
+      } else [current, bestMoveEdges] = admissible[0]
+
+      if (tabu.length !== 0) {
+        let tf = tabu[0][0]
+        if (tf.cost < best.cost && tf.cost < current.cost) {
+          [current, bestMoveEdges] = tabu[0]
+        }
+      }
+
+      for (let edge of bestMoveEdges) makeTabu({ tabuList, edge, iter: i })
+
+      if (candidates[0][0].cost < best.cost) best = candidates[0][0]
+      //console.log(`> Iteration: ${i+1}, Tenure: ${prohibPeriod}, Best: ${best.cost}`)
+    }
+
+    return best
+  } catch (e) {
+    throw new Error(`Reactive tabu search: ${e}`)
+  }
+}
 
 
-
-
-
-
-
-
-
-
-
-
+module.exports = { reactiveTabuSearch }
 
 
 

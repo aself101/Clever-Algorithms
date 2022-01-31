@@ -1,4 +1,4 @@
-# Clever Algorithms by Jason Brownlee
+# Clever Algorithms by Dr. Jason Brownlee
 A library for testing various nature inspired algorithms to solve different problem sets.
 All code written in Javascript; to be executed within a Node/Browser environment.
 
@@ -17,7 +17,9 @@ all original code examples can be found written in the Ruby programming language
 + [NodeJS Homepage](https://nodejs.org/en/)
 + [Node Version Manager](https://github.com/nvm-sh/nvm)
 Current LTS v16.13.2
+
 Recommendation is to install the Node Version Manager and install Nodejs through this version manager
+
 From the command line(Linux/Mac):
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
@@ -70,4 +72,4 @@ Inspired by the plasticity and learning qualities of the human nervous system
 ## Contributing
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+[Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License](https://creativecommons.org/licenses/by-nc-sa/2.5/au/)

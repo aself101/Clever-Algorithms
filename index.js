@@ -10,6 +10,7 @@ const {
   guidedLocalSearch,
   iteratedLocalSearch,
   randomSearch,
+  reactiveTabuSearch,
   scatterSearch,
   stochasticHillClimbingSearch,
   tabuSearch,
@@ -19,7 +20,7 @@ const {
 
 const main = () => {
   try {
-
+    
   } catch (e) {
     throw new Error(`Main() Stochastic: ${e}`)
   }
@@ -86,6 +87,7 @@ main()
   console.log(`Done. Best Solution: ${best.cost}, Vector: ${best.vector}`)
 
   ** GUIDED LOCAL SEARCH **
+  // Note: Best algo for Berlin52
   // Algorithm configuration
   const maxIter = 150
   const maxNoImprov = 20
@@ -159,6 +161,21 @@ main()
     tabuListSize,
     candidateListSize: maxCandidates,
     maxIter
+  })
+  console.log(`Done. Best Solution: Cost=${best.cost}, Vector=${best.vector}`)
+
+  ** REACTIVE TABU SEARCH **
+  // Algorithm configuration
+  const maxIter = 100
+  const maxCandidates = 50
+  const increase = 1.3
+  const decrease = 0.9
+  const best = reactiveTabuSearch({
+    cities: BERLIN_52,
+    maxCand: maxCandidates,
+    maxIter,
+    increase,
+    decrease
   })
   console.log(`Done. Best Solution: Cost=${best.cost}, Vector=${best.vector}`)
 */
