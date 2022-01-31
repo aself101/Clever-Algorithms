@@ -6,7 +6,7 @@
 * objectiveFunction: Returns values squared
 * @param {Array} vector: Array of misc values
 * @returns {Number} Sum from array of misc values run through Math.pow(val, 2)
-* @called Stoachistic: [random_search.js]
+* @called Stochastic: [random_search.js]
 **/
 const objectiveFunction = (vector) => {
   return vector.reduce((acc, cur, i) => {
@@ -18,7 +18,7 @@ const objectiveFunction = (vector) => {
 * randomVector: Generates a vector of random values from a min-max 2d array
 * @param {Array} minmax: 2D vector of min-max values; i.e [-5,5]
 * @returns {Array} Random 1D vector of misc values
-* @called Stoachistic: [random_search.js]
+* @called Stochastic: [random_search.js]
 **/
 const randomVector = (minmax) => {
   return new Array(minmax.length).fill(0).map((a,i) => {
@@ -32,7 +32,7 @@ const randomVector = (minmax) => {
 * @param {Number} max: max value of a minmax
 * @returns {Number} Random value from minmax
 * @called randomVector()
-  Stoachistic: [adaptive_random_search.js]
+  Stochastic: [adaptive_random_search.js]
 **/
 const randomInBounds = ({ min, max }) => {
   return min + ((max - min) * Math.random())
@@ -42,7 +42,8 @@ const randomInBounds = ({ min, max }) => {
 * oneMax: Sums vals if array is 1
 * @param {Array} vector: Array of misc 0,1 values
 * @returns {Number} Sum from array of misc 0,1 values
-* @called Stoachistic: [stochastic_hill_climbing.js]
+* @called Stochastic: [stochastic_hill_climbing.js]
+          Evolutionary: [genetic_algorithm.js]
 **/
 const oneMax = (vector) => {
   return vector.reduce((acc, cur, i) => {
@@ -54,7 +55,8 @@ const oneMax = (vector) => {
 * randomBitstring: Generates a bitstring of random values 0, 1
 * @param {Number} numBits: Length of bitstring
 * @returns {Array} Random 1D bitstring 0,1
-* @called Stoachistic: [stochastic_hill_climbing.js]
+* @called Stochastic: [stochastic_hill_climbing.js]
+          Evolutionary: [genetic_algorithm.js]
 **/
 const randomBitstring = (numBits) => {
   return new Array(numBits).fill('0').map((a,i) => {
@@ -67,7 +69,8 @@ const randomBitstring = (numBits) => {
 * randomInteger: Generates a random number between 1...n
 * @param {Number} n: number max
 * @returns {Number} Random number between 1...n
-* @called Stoachistic: [stochastic_hill_climbing.js, iterated_local_search.js]
+* @called Stochastic: [stochastic_hill_climbing.js, iterated_local_search.js]
+          Evolutionary: [genetic_algorithm.js]
 **/
 const randomInteger = (n) => {
   return Math.round(Math.random() * n)
@@ -213,8 +216,28 @@ const arrayDifference = ({ arr1, arr2 }) => {
   }).filter((c) => c !== null)
 }
 
+/**
+* binaryTournament: Runs a tournament between two random solutions and returns
+  the fittest
+* @param {Array} pop: Population of possible solutions
+* @returns {Object} fittest solution between two randomly chosen in population
+* @called Evolutionary: [genetic_algorithm.js]
+**/
+const binaryTournament = (pop) => {
+  try {
+    let i = randomInteger(pop.length-1)
+    let j = randomInteger(pop.length-1)
+    while (j === i) j = randomInteger(pop.length-1)
+    if (pop[i].fitness > pop[j].fitness) return pop[i]
+    return pop[j]
+  } catch (e) {
+    throw new Error(`Binary tournament: ${e}`)
+  }
+}
+
 module.exports = {
   arrayDifference,
+  binaryTournament,
   euclid2D,
   euclideanDistance,
   objectiveFunction,

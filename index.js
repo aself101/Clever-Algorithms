@@ -17,10 +17,31 @@ const {
   variableNeighborhoodSearch
 } = require('./stochastic')
 
+const {
+  geneticAlgorithmSearch
+} = require('./evolutionary')
 
 const main = () => {
   try {
-    
+    // Problem configuration
+    const numBits = 64
+    // Algorithm configuration
+    const maxGens = 100
+    const popSize = 100
+    const pCrossover = 0.98
+    const pMutation = 1.0 / numBits
+
+    const best = geneticAlgorithmSearch({
+      maxGens,
+      numBits,
+      popSize,
+      pCrossover,
+      pMutation
+    })
+
+    console.log(`Done. Solution: ${best.fitness}, Generation: ${best.generation}, Bitstring: ${best.bitstring.join('')}`)
+
+    return 1
   } catch (e) {
     throw new Error(`Main() Stochastic: ${e}`)
   }

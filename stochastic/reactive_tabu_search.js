@@ -318,12 +318,6 @@ const reactiveTabuSearch = ({ cities, maxCand, maxIter, increase, decrease }) =>
   }
 }
 
-
 module.exports = { reactiveTabuSearch }
-
-
-
-
-
 
 /* END */
