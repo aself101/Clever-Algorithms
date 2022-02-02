@@ -10,3 +10,7 @@ the broader population. In conjunction with selection, the perturbation
 effect self-organizes the sampling of the problem space, bounding it to
 known areas of interest.
 *******************************************************************************/
+const { objectiveFunction, randomVector } = require('../utils')
+
+
+/* END */
