@@ -235,6 +235,30 @@ const binaryTournament = (pop) => {
   }
 }
 
+/**
+* randomGaussian: generate a randomized gaussian number(normal distribution)
+* @param {Number} mean: mean value(expected distribution)
+* @param {Number} stdev: standard deviation
+* @returns {Number} random gauss
+* @called Evolutionary: [evolution_strategies.js]
+**/
+const randomGaussian = (mean=0.0, stdev=1.0) => {
+  try {
+    let u1 = 0
+    let u2 = 0
+    let w = 0
+    do {
+      u1 = 2 * Math.random() - 1
+      u2 = 2 * Math.random() - 1
+      w = u1 * u1 + u2 * u2
+    } while (w >= 1)
+    w = Math.sqrt((-2.0 * Math.log(w)) / w)
+    return mean + (u2 * w) * stdev
+  } catch (e) {
+    throw new Error(`Random gaussian: ${e}`)
+  }
+}
+
 module.exports = {
   arrayDifference,
   binaryTournament,
@@ -243,6 +267,7 @@ module.exports = {
   objectiveFunction,
   oneMax,
   randomBitstring,
+  randomGaussian,
   randomInBounds,
   randomInteger,
   randomPerm,

@@ -2,8 +2,8 @@
 Clever Algorithms by Jason Brownlee
 Al original code written in Ruby, translated to Javascript
 *******************************************************************************/
-const { BERLIN_52 } = require('./constants')
-const { range } = require('./utils')
+const { BERLIN_52 } = require('./src/constants')
+const { range } = require('./src/utils')
 const {
   adaptiveRandomSearch,
   greedyRandomizedAdaptiveSearch,
@@ -15,31 +15,31 @@ const {
   stochasticHillClimbingSearch,
   tabuSearch,
   variableNeighborhoodSearch
-} = require('./stochastic')
+} = require('./src/stochastic')
 
 const {
+  evolutionaryStrategySearch,
   geneticAlgorithmSearch
-} = require('./evolutionary')
+} = require('./src/evolutionary')
 
 const main = () => {
   try {
     // Problem configuration
-    const numBits = 64
+    const problemSize = 10
+    const searchSpace = new Array(problemSize).fill([-50,50])
     // Algorithm configuration
-    const maxGens = 100
-    const popSize = 100
-    const pCrossover = 0.98
-    const pMutation = 1.0 / numBits
+    const maxGens = 1000
+    const popSize = 30
+    const numChildren = 20
 
-    const best = geneticAlgorithmSearch({
+    const best = evolutionaryStrategySearch({
       maxGens,
-      numBits,
+      searchSpace,
       popSize,
-      pCrossover,
-      pMutation
+      numChildren
     })
 
-    console.log(`Done. Solution: ${best.fitness}, Generation: ${best.generation}, Bitstring: ${best.bitstring.join('')}`)
+    console.log(`Done. Solution: ${best.fitness}, Vector: ${best.vector}`)
 
     return 1
   } catch (e) {
@@ -199,4 +199,41 @@ main()
     decrease
   })
   console.log(`Done. Best Solution: Cost=${best.cost}, Vector=${best.vector}`)
+
+  ** GENETIC ALGORITHM **
+  // Problem configuration
+  const numBits = 64
+  // Algorithm configuration
+  const maxGens = 100
+  const popSize = 100
+  const pCrossover = 0.98
+  const pMutation = 1.0 / numBits
+
+  const best = geneticAlgorithmSearch({
+    maxGens,
+    numBits,
+    popSize,
+    pCrossover,
+    pMutation
+  })
+
+  console.log(`Done. Solution: ${best.fitness}, Generation: ${best.generation}, Bitstring: ${best.bitstring.join('')}`)
+
+  ** EVOLUTIONARY STRATEGY **
+  // Problem configuration
+  const problemSize = 10
+  const searchSpace = new Array(problemSize).fill([-50,50])
+  // Algorithm configuration
+  const maxGens = 1000
+  const popSize = 30
+  const numChildren = 20
+
+  const best = evolutionaryStrategySearch({
+    maxGens,
+    searchSpace,
+    popSize,
+    numChildren
+  })
+
+  console.log(`Done. Solution: ${best.fitness}, Vector: ${best.vector}`)
 */

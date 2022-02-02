@@ -85,6 +85,16 @@ const reproduce = ({ selected, popSize, pCross, pMutation }) => {
   }
 }
 
+/**
+* geneticAlgorithmSearch: main search function
+* @param {Array} maxGens: maximum generations
+* @param {Number} numBits: number of bits per individual
+* @param {Number} popSize: population size
+* @param {Number} pCrossover: probability of a crossover
+* @param {Number} pMutation: probability of a mutation
+* @returns {Object} best: best solution found
+* @called
+**/
 const geneticAlgorithmSearch = ({ maxGens, numBits, popSize, pCrossover,
   pMutation }) => {
   try {
@@ -117,48 +127,5 @@ const geneticAlgorithmSearch = ({ maxGens, numBits, popSize, pCrossover,
 }
 
 module.exports = { geneticAlgorithmSearch }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* END */
