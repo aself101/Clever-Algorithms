@@ -1,4 +1,4 @@
-# Clever Algorithms by Dr. Jason Brownlee
+# 🤖 Clever Algorithms by Dr. Jason Brownlee
 A library for testing various nature inspired algorithms to solve different problem sets.
 All code written in Javascript; to be executed within a Node/Browser environment.
 
@@ -16,6 +16,7 @@ all original code examples can be found written in the Ruby programming language
 ##### NodeJS
 + [NodeJS Homepage](https://nodejs.org/en/)
 + [Node Version Manager](https://github.com/nvm-sh/nvm)
+
 Current LTS v16.13.2
 
 Recommendation is to install the Node Version Manager and install Nodejs through this version manager
@@ -77,10 +78,14 @@ Uses the Berlin52 data set.
 
 ### Stochastic
 Focuses on the introduction of randomness into heuristic methods
+* [Random Search](src/stochastic/random_search.js)
+* [Adaptive Random Search](src/stochastic/adaptive_random_search.js)
+* [Stochastic Hill Climbing](src/stochastic/stochastic_hill_climbing.js)
 * [Iterated Local Search](src/stochastic/iterated_local_search.js)
 * [Guided Local Search](src/stochastic/guided_local_search.js)
 * [Variable Neighborhood Search](src/stochastic/variable_neighborhood_search.js)
 * [Greedy Randomized Adaptive Search](src/stochastic/greedy_randomized_adaptive_search.js)
+* [Scatter Search](src/stochastic/scatter_search.js)
 * [Tabu Search](src/stochastic/tabu_search.js)
 * [Reactive Tabu Search](src/stochastic/reactive_tabu_search.js)
 
