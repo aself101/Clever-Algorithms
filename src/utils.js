@@ -6,7 +6,8 @@
 * objectiveFunction: Returns values squared
 * @param {Array} vector: Array of misc values
 * @returns {Number} Sum from array of misc values run through Math.pow(val, 2)
-* @called Stochastic: [random_search.js]
+* @called Stochastic: [random_search.js, scatter_search.js]
+          Evolutionary: [evolution_strategies.js]
 **/
 const objectiveFunction = (vector) => {
   return vector.reduce((acc, cur, i) => {
@@ -18,7 +19,8 @@ const objectiveFunction = (vector) => {
 * randomVector: Generates a vector of random values from a min-max 2d array
 * @param {Array} minmax: 2D vector of min-max values; i.e [-5,5]
 * @returns {Array} Random 1D vector of misc values
-* @called Stochastic: [random_search.js]
+* @called Stochastic: [random_search.js, scatter_search.js]
+          Evolutionary: [evolution_strategies.js]
 **/
 const randomVector = (minmax) => {
   return new Array(minmax.length).fill(0).map((a,i) => {
@@ -32,7 +34,7 @@ const randomVector = (minmax) => {
 * @param {Number} max: max value of a minmax
 * @returns {Number} Random value from minmax
 * @called randomVector()
-  Stochastic: [adaptive_random_search.js]
+          Stochastic: [adaptive_random_search.js, scatter_search.js]
 **/
 const randomInBounds = ({ min, max }) => {
   return min + ((max - min) * Math.random())
@@ -69,7 +71,8 @@ const randomBitstring = (numBits) => {
 * randomInteger: Generates a random number between 1...n
 * @param {Number} n: number max
 * @returns {Number} Random number between 1...n
-* @called Stochastic: [stochastic_hill_climbing.js, iterated_local_search.js]
+* @called Stochastic: [stochastic_hill_climbing.js, iterated_local_search.js,
+          tabu_search.js, reactive_tabu_search.js, greedy_randomized_adaptive_search.js]
           Evolutionary: [genetic_algorithm.js]
 **/
 const randomInteger = (n) => {
@@ -82,7 +85,8 @@ const randomInteger = (n) => {
 * @param {Array} c2: 1D array of a location(2 vals)
 * @returns {Number} Distance between two locations
 * @called stochastic: [guided_local_search.js, variable_neighborhood_search.js,
-  iterated_local_search.js]
+          iterated_local_search.js, greedy_randomized_adaptive_search.js,
+          tabu_search.js, reactive_tabu_search.js]
 **/
 const euclid2D = ({ c1, c2 }) => {
   return Math.round(Math.sqrt(
@@ -114,7 +118,7 @@ const euclideanDistance = ({ c1, c2 }) => {
 * @param {Array} cities: 2D array of all available cities
 * @returns {Array} 1D array of random indexes
 * @called stochastic: [guided_local_search.js, variable_neighborhood_search.js,
-  iterated_local_search.js]
+  iterated_local_search.js, tabu_search.js, reactive_tabu_search.js]
 **/
 const randomPermutation = (cities) => {
   try {
@@ -162,7 +166,7 @@ const randomPerm = ({ arr, size }) => {
 * @param {Array} permutation: permutation of random indexes
 * @returns {Array} 1D array of random indexes
 * @called stochastic: [guided_local_search.js, variable_neighborhood_search.js,
-  iterated_local_search.js]
+  iterated_local_search.js, greedy_randomized_adaptive_search.js]
 **/
 const stochasticTwoOpt = (permutation) => {
   try {

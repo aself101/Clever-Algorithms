@@ -3,6 +3,7 @@ Clever Algorithms, pg 30
 Random Search: The strategy of Random Search is to sample solutions from across the
 entire search space using a uniform probability distribution. Each future
 sample is independent of the samples that come before it.
+Problem: Continuous function optimization
 *******************************************************************************/
 const { objectiveFunction, randomVector } = require('../utils')
 

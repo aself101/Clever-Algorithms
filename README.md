@@ -34,12 +34,39 @@ of situations. The problems tackled in the book are the following:
 Seeking a minimum set of values given an objective function. See utils.js.
 &#402;(x) where f = &#8721;<sub>i=1</sub>  -5.0 &#8924; x<sub>i</sub> &#8924; 5.0
 
+#### Stochastic
+* [Random Search](src/stochastic/random_search.js)
+* [Adaptive Random Search](src/stochastic/adaptive_random_search.js)
+* [Scatter Search](src/stochastic/scatter_search.js)
+
+#### Evolutionary
+* [Evolution Strategies](src/evolutionary/evolution_strategies.js)
+* [Differential Evolution](src/evolutionary/differential_evolution.js)
+
 ### Binary String Optimization - One Max
 Maximization problem to prepare a string of all '1' bits.
+
+#### Stochastic
+* [Stochastic Hill Climbing](src/stochastic/stochastic_hill_climbing.js)
+
+#### Evolutionary
+* [Genetic Algorithm](src/evolutionary/genetic_algorithm.js)
 
 ### Traveling Salesman Problem
 Seeks a permutation of the order to visit cities that minimizes the total distance traveled.
 Uses the Berlin52 data set.
+
+#### Stochastic
+* [Random Search](src/stochastic/random_search.js)
+* [Adaptive Random Search](src/stochastic/adaptive_random_search.js)
+* [Stochastic Hill Climbing](src/stochastic/stochastic_hill_climbing.js)
+* [Iterated Local Search](src/stochastic/iterated_local_search.js)
+* [Guided Local Search](src/stochastic/guided_local_search.js)
+* [Variable Neighborhood Search](src/stochastic/variable_neighborhood_search.js)
+* [Greedy Randomized Adaptive Search](src/stochastic/greedy_randomized_adaptive_search.js)
+* [Scatter Search](src/stochastic/scatter_search.js)
+* [Tabu Search](src/stochastic/tabu_search.js)
+* [Reactive Tabu Search](src/stochastic/reactive_tabu_search.js)
 
 ## Usage
 ```javascript
@@ -50,9 +77,18 @@ Uses the Berlin52 data set.
 
 ### Stochastic
 Focuses on the introduction of randomness into heuristic methods
+* [Iterated Local Search](src/stochastic/iterated_local_search.js)
+* [Guided Local Search](src/stochastic/guided_local_search.js)
+* [Variable Neighborhood Search](src/stochastic/variable_neighborhood_search.js)
+* [Greedy Randomized Adaptive Search](src/stochastic/greedy_randomized_adaptive_search.js)
+* [Tabu Search](src/stochastic/tabu_search.js)
+* [Reactive Tabu Search](src/stochastic/reactive_tabu_search.js)
 
 ### Evolutionary
 Inspired by evolution by means of natural selection
+* [Genetic Algorithm](src/evolutionary/genetic_algorithm.js)
+* [Evolution Strategies](src/evolutionary/evolution_strategies.js)
+* [Differential Evolution](src/evolutionary/differential_evolution.js)
 
 ### Physical
 Inspired by physical and social systems

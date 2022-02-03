@@ -18,6 +18,7 @@ const {
 } = require('./src/stochastic')
 
 const {
+  differentialEvolutionSearch,
   evolutionaryStrategySearch,
   geneticAlgorithmSearch
 } = require('./src/evolutionary')
@@ -25,18 +26,20 @@ const {
 const main = () => {
   try {
     // Problem configuration
-    const problemSize = 10
-    const searchSpace = new Array(problemSize).fill([-50,50])
+    const problemSize = 3
+    const searchSpace = new Array(problemSize).fill([-5,5])
     // Algorithm configuration
-    const maxGens = 1000
-    const popSize = 30
-    const numChildren = 20
+    const maxGens = 200
+    const popSize = 10 * problemSize
+    const weightF = 0.8
+    const crossF = 0.9
 
-    const best = evolutionaryStrategySearch({
+    const best = differentialEvolutionSearch({
       maxGens,
       searchSpace,
       popSize,
-      numChildren
+      f: weightF,
+      cr: crossF
     })
 
     console.log(`Done. Solution: ${best.fitness}, Vector: ${best.vector}`)
