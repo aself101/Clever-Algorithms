@@ -12,7 +12,13 @@ Problem: Continuous function optimization; minimizing a cost function
 const { objectiveFunction, randomVector, randomGaussian } = require('../utils')
 
 
+const mutate = () => {
+  try {
 
+  } catch (e) {
+    throw new Error(`Mutate: ${e}`)
+  }
+}
 
 
 
