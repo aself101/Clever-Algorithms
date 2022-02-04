@@ -19,6 +19,7 @@ const {
 
 const {
   differentialEvolutionSearch,
+  evolutionaryProgrammingSearch,
   evolutionaryStrategySearch,
   geneticAlgorithmSearch
 } = require('./src/evolutionary')
@@ -26,23 +27,21 @@ const {
 const main = () => {
   try {
     // Problem configuration
-    const problemSize = 3
+    const problemSize = 2
     const searchSpace = new Array(problemSize).fill([-5,5])
     // Algorithm configuration
-    const maxGens = 200
-    const popSize = 10 * problemSize
-    const weightF = 0.8
-    const crossF = 0.9
+    const maxGens = 2000
+    const popSize = 1000
+    const boutSize = 5
 
-    const best = differentialEvolutionSearch({
+    const best = evolutionaryProgrammingSearch({
       maxGens,
       searchSpace,
       popSize,
-      f: weightF,
-      cr: crossF
+      boutSize
     })
 
-    console.log(`Done. Solution: ${best.cost}, Vector: ${best.vector}`)
+    console.log(`Done. Solution: ${best.fitness}, Vector: ${best.vector}`)
 
     return 1
   } catch (e) {
@@ -239,4 +238,24 @@ main()
   })
 
   console.log(`Done. Solution: ${best.fitness}, Vector: ${best.vector}`)
+
+  ** DIFFERENTIAL EVOLUTION **
+  // Problem configuration
+  const problemSize = 3
+  const searchSpace = new Array(problemSize).fill([-5,5])
+  // Algorithm configuration
+  const maxGens = 200
+  const popSize = 10 * problemSize
+  const weightF = 0.8
+  const crossF = 0.9
+
+  const best = differentialEvolutionSearch({
+    maxGens,
+    searchSpace,
+    popSize,
+    f: weightF,
+    cr: crossF
+  })
+
+  console.log(`Done. Solution: ${best.cost}, Vector: ${best.vector}`)
 */

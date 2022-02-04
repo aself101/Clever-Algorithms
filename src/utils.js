@@ -73,7 +73,7 @@ const randomBitstring = (numBits) => {
 * @returns {Number} Random number between 1...n
 * @called Stochastic: [stochastic_hill_climbing.js, iterated_local_search.js,
           tabu_search.js, reactive_tabu_search.js, greedy_randomized_adaptive_search.js]
-          Evolutionary: [genetic_algorithm.js]
+          Evolutionary: [genetic_algorithm.js, evolutionary_programming.js]
 **/
 const randomInteger = (n) => {
   return Math.round(Math.random() * n)
