@@ -6,6 +6,7 @@ candidate solution and only accept it if it results in an improvement.
 The strategy was proposed to address the limitations of deterministic hill
 climbing techniques that were likely to get stuck in local optima due to their
 greedy acceptance of neighboring moves.
+Problem: Binary string optimization
 *******************************************************************************/
 const { oneMax, randomBitstring, randomInteger } = require('../utils')
 

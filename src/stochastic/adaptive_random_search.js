@@ -7,7 +7,7 @@ approximate the optimal step size required to reach the global optimum
 in the search space. This is achieved by trialling and adopting smaller
 or larger step sizes only if they result in an improvement in the search
 performance.
-Problem: Continuous function optimization
+Problem: Continuous function optimization; minimizing a cost function
 *******************************************************************************/
 const { objectiveFunction, randomVector, randomInBounds } = require('../utils')
 

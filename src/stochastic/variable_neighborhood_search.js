@@ -9,6 +9,7 @@ may not be a local minimum for a different neighborhood structure,
 2) a global minimum is a local minimum for all possible neighborhood
 structures, and 3) local minima are relatively close to global minima for
 many problem classes.
+Problem: TSP
 *******************************************************************************/
 const { euclid2D, randomPermutation, stochasticTwoOpt } = require('../utils')
 

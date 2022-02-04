@@ -9,6 +9,7 @@ Additional intermediate-term memory structures may be introduced
 to bias moves toward promising areas of the search space, as well as
 longer-term memory structures that promote a general diversity in the
 search across the search space.
+Problem: TSP
 *******************************************************************************/
 const { euclid2D, randomPermutation, randomInteger } = require('../utils')
 

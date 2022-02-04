@@ -9,6 +9,7 @@ nisms on the population of candidate solutions, where the cost function
 sentation of a candidate governs the probabilistic contributions a given
 candidate solution can make to the subsequent generation of candidate
 solutions.
+Problem: Binary string optimization; maximization problem
 *******************************************************************************/
 const { oneMax, randomBitstring, randomInteger,
   binaryTournament } = require('../utils')

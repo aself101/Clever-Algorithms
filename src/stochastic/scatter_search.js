@@ -10,6 +10,7 @@ are partitioned into subsets and linearly recombined to create weighted
 centroids of sample-based neighborhoods. The results of recombination
 are refined using an embedded heuristic and assessed in the context of
 the reference set as to whether or not they are retained.
+Problem: Continuous function optimization; minimizing a cost function
 *******************************************************************************/
 const { objectiveFunction, randomVector, randomInBounds,
   euclideanDistance, arrayDifference } = require('../utils')
@@ -224,7 +225,7 @@ const exploreSubsets = ({ bounds, refSet, maxNoImprov, stepSize }) => {
     let subsets = selectSubsets(refSet).map((c) => {
       return c.map((_c) => { return { ..._c, new: false } })
     })
-  
+
     subsets.map((subset) => {
       let candidates = recombine({ subset, minmax: bounds })
       let improved = new Array(candidates.length).fill(0).map((c,i) => {

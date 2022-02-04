@@ -9,6 +9,7 @@ of which is refined using an embedded heuristic.
 Heuristics: Iterated Local Search was designed for and has been predominately
 applied to discrete domains, such as combinatorial optimization
 problems.
+Problem: TSP
 *******************************************************************************/
 const { euclid2D, randomInteger, randomPermutation,
   stochasticTwoOpt } = require('../utils')

@@ -42,7 +42,7 @@ const main = () => {
       cr: crossF
     })
 
-    console.log(`Done. Solution: ${best.fitness}, Vector: ${best.vector}`)
+    console.log(`Done. Solution: ${best.cost}, Vector: ${best.vector}`)
 
     return 1
   } catch (e) {

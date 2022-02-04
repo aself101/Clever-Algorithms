@@ -3,11 +3,11 @@
 */
 
 /**
-* objectiveFunction: Returns values squared
+* objectiveFunction: Cost function; Returns values squared
 * @param {Array} vector: Array of misc values
 * @returns {Number} Sum from array of misc values run through Math.pow(val, 2)
 * @called Stochastic: [random_search.js, scatter_search.js]
-          Evolutionary: [evolution_strategies.js]
+          Evolutionary: [evolution_strategies.js, evolutionary_programming.js]
 **/
 const objectiveFunction = (vector) => {
   return vector.reduce((acc, cur, i) => {
@@ -20,7 +20,7 @@ const objectiveFunction = (vector) => {
 * @param {Array} minmax: 2D vector of min-max values; i.e [-5,5]
 * @returns {Array} Random 1D vector of misc values
 * @called Stochastic: [random_search.js, scatter_search.js]
-          Evolutionary: [evolution_strategies.js]
+          Evolutionary: [evolution_strategies.js, evolutionary_programming.js]
 **/
 const randomVector = (minmax) => {
   return new Array(minmax.length).fill(0).map((a,i) => {
@@ -41,7 +41,7 @@ const randomInBounds = ({ min, max }) => {
 }
 
 /**
-* oneMax: Sums vals if array is 1
+* oneMax: Cost function; Sums vals if array is 1
 * @param {Array} vector: Array of misc 0,1 values
 * @returns {Number} Sum from array of misc 0,1 values
 * @called Stochastic: [stochastic_hill_climbing.js]
@@ -244,7 +244,7 @@ const binaryTournament = (pop) => {
 * @param {Number} mean: mean value(expected distribution)
 * @param {Number} stdev: standard deviation
 * @returns {Number} random gauss
-* @called Evolutionary: [evolution_strategies.js]
+* @called Evolutionary: [evolution_strategies.js, evolutionary_programming.js]
 **/
 const randomGaussian = (mean=0.0, stdev=1.0) => {
   try {

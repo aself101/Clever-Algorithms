@@ -7,6 +7,7 @@ optima. The strategy of the procedure is centered on the stochastic and greedy
 step-wise construction mechanism that constrains the selection and
 order-of-inclusion of the components of a solution based on the value they
 are expected to provide.
+Problem: TSP
 *******************************************************************************/
 const { euclid2D, randomPermutation, stochasticTwoOpt,
   randomInteger, arrayDifference } = require('../utils')

@@ -9,6 +9,7 @@ population member. This perturbs population members relative to the spread of
 the broader population. In conjunction with selection, the perturbation
 effect self-organizes the sampling of the problem space, bounding it to
 known areas of interest.
+Problem: Continuous function optimization; minimizing a cost function
 *******************************************************************************/
 const { objectiveFunction, randomVector, randomInteger } = require('../utils')
 

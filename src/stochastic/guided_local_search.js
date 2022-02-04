@@ -9,6 +9,7 @@ employed by the Local Search procedure. The Local Search is repeated a number
 of times using the last local optima discovered and the augmented cost
 function that guides exploration away from solutions with features
 present in discovered local optima.
+Problem: TSP
 *******************************************************************************/
 const { euclid2D, randomPermutation, stochasticTwoOpt } = require('../utils')
 

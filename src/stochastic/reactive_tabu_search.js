@@ -8,6 +8,7 @@ The strategy of the broader field of Reactive Search Optimization is
 to automate the process by which a practitioner configures a search
 procedure by monitoring its online behavior and to use machine learning
 techniques to adapt a techniques configuration.
+Problem: TSP
 *******************************************************************************/
 const { euclid2D, randomPermutation, randomInteger } = require('../utils')
 

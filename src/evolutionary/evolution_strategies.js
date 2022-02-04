@@ -8,6 +8,7 @@ modification, where the amount of variation was adapted dynamically
 with performance-based heuristics. Contemporary approaches co-adapt
 parameters that control the amount and bias of variation with the
 candidate solutions.
+Problem: Continuous function optimization; minimizing a cost function
 *******************************************************************************/
 const { objectiveFunction, randomVector, randomGaussian } = require('../utils')
 
