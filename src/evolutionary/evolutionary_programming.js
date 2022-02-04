@@ -14,7 +14,7 @@ const { objectiveFunction, randomVector, randomGaussian } = require('../utils')
 
 const mutate = () => {
   try {
-
+    let child = { vector: [], strategy: [] }
   } catch (e) {
     throw new Error(`Mutate: ${e}`)
   }
