@@ -80,6 +80,16 @@ const randomInteger = (n) => {
 }
 
 /**
+* randomIntMinMax: Generates a random integer between min and max
+* @param {Number} n: number max
+* @returns {Number} Random number between min,max
+* @called Evolutionary: [grammatical_evolution.js]
+**/
+const randomIntMinMax = ({ min, max }) => {
+  return Math.round(Math.random() * (Math.floor(max) - Math.ceil(min)) + Math.ceil(min))
+}
+
+/**
 * euclid2D: Euclidean distance calculation
 * @param {Array} c1: 1D array of a location(2 vals)
 * @param {Array} c2: 1D array of a location(2 vals)
@@ -263,6 +273,27 @@ const randomGaussian = (mean=0.0, stdev=1.0) => {
   }
 }
 
+/**
+* pointMutation: randomly mutates 1 or more bits in a bitstring
+* @param {Array} bitstring: Individual in a population
+* @param {Number} rate: Mutation rate(% chance) 1/length of bitstring
+* @returns {Array} mutated solution
+* @called evolutionary: [genetic_algorithm.js, grammatical_evolution.js]
+**/
+const pointMutation = ({ bitstring, rate=1.0/bitstring.length }) => {
+  try {
+    return bitstring.map((bit,i) => {
+      if (Math.random() < rate) {
+        if (bit === '1') return '0'
+        return '1'
+      }
+      return bit
+    })
+  } catch (e) {
+    throw new Error(`Point mutation: ${e}`)
+  }
+}
+
 module.exports = {
   arrayDifference,
   binaryTournament,
@@ -270,10 +301,12 @@ module.exports = {
   euclideanDistance,
   objectiveFunction,
   oneMax,
+  pointMutation,
   randomBitstring,
   randomGaussian,
   randomInBounds,
   randomInteger,
+  randomIntMinMax,
   randomPerm,
   randomPermutation,
   randomVector,

@@ -12,27 +12,7 @@ solutions.
 Problem: Binary string optimization; maximization problem
 *******************************************************************************/
 const { oneMax, randomBitstring, randomInteger,
-  binaryTournament } = require('../utils')
-
-/**
-* pointMutation: randomly mutates 1 or more bits in a bitstring
-* @param {Array} bitstring: Individual in a population
-* @param {Number} rate: Mutation rate(% chance) 1/length of bitstring
-* @returns {Array} mutated solution
-**/
-const pointMutation = ({ bitstring, rate=1.0/bitstring.length }) => {
-  try {
-    return bitstring.map((bit,i) => {
-      if (Math.random() < rate) {
-        if (bit === '1') return '0'
-        return '1'
-      }
-      return bit
-    })
-  } catch (e) {
-    throw new Error(`Point mutation: ${e}`)
-  }
-}
+  binaryTournament, pointMutation } = require('../utils')
 
 /**
 * crossover: Crosses two parents at a randomly selected spot if randomly selected
