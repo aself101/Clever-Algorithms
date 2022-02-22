@@ -14,7 +14,17 @@ const objectiveFunction = (vector) => {
     return acc + (Math.pow(cur, 2.0))
   },0)
 }
-
+/**
+* objectiveFunction2: Cost function; Returns (x-2) values squared
+* @param {Array} vector: Array of misc values
+* @returns {Number} Sum from array of misc values run through Math.pow(val, 2)
+* @called Evolutionary: [nondominated_sorting_genetic_algorithm.js]
+**/
+const objectiveFunction2 = (vector) => {
+  return vector.reduce((acc, cur, i) => {
+    return acc + (Math.pow((cur-2.0), 2.0))
+  },0)
+}
 /**
 * randomVector: Generates a vector of random values from a min-max 2d array
 * @param {Array} minmax: 2D vector of min-max values; i.e [-5,5]
@@ -27,7 +37,6 @@ const randomVector = (minmax) => {
     return randomInBounds({ min: minmax[i][0], max: minmax[i][1] })
   })
 }
-
 /**
 * randomInBounds: Generates a random value in the bounds of a min and max
 * @param {Number} min: min value of a minmax
@@ -39,7 +48,6 @@ const randomVector = (minmax) => {
 const randomInBounds = ({ min, max }) => {
   return min + ((max - min) * Math.random())
 }
-
 /**
 * oneMax: Cost function; Sums vals if array is 1
 * @param {Array} vector: Array of misc 0,1 values
@@ -52,7 +60,6 @@ const oneMax = (vector) => {
     return acc + (cur === '1' ? 1 : 0)
   },0)
 }
-
 /**
 * randomBitstring: Generates a bitstring of random values 0, 1
 * @param {Number} numBits: Length of bitstring
@@ -66,7 +73,6 @@ const randomBitstring = (numBits) => {
     return a
   })
 }
-
 /**
 * randomInteger: Generates a random number between 1...n
 * @param {Number} n: number max
@@ -78,7 +84,6 @@ const randomBitstring = (numBits) => {
 const randomInteger = (n) => {
   return Math.round(Math.random() * n)
 }
-
 /**
 * randomIntMinMax: Generates a random integer between min and max
 * @param {Number} n: number max
@@ -88,7 +93,6 @@ const randomInteger = (n) => {
 const randomIntMinMax = ({ min, max }) => {
   return Math.round(Math.random() * (Math.floor(max) - Math.ceil(min)) + Math.ceil(min))
 }
-
 /**
 * euclid2D: Euclidean distance calculation
 * @param {Array} c1: 1D array of a location(2 vals)
@@ -122,7 +126,6 @@ const euclideanDistance = ({ c1, c2 }) => {
     throw new Error(`Euclidea distance: ${e}`)
   }
 }
-
 /**
 * randomPermutation: Generates a random permutation of indexes
 * @param {Array} cities: 2D array of all available cities
@@ -143,7 +146,6 @@ const randomPermutation = (cities) => {
     throw new Error(`Random permutation: ${e}`)
   }
 }
-
 /**
 * randomPerm: Generates a random permutation of values in an array
 * @param {Array} arr: array of values
@@ -170,7 +172,6 @@ const randomPerm = ({ arr, size }) => {
     throw new Error(`Random perm: ${e}`)
   }
 }
-
 /**
 * stochasticTwoOpt: Generates a new random permutation
 * @param {Array} permutation: permutation of random indexes
@@ -202,7 +203,6 @@ const stochasticTwoOpt = (permutation) => {
     throw new Error(`Stochastic two opt: ${e}`)
   }
 }
-
 /**
 * range: Generates a range of numbers startAt...size
 * @param {Number} size: size of the array range
@@ -214,7 +214,6 @@ const stochasticTwoOpt = (permutation) => {
 const range = ({ size, startAt=0 }) => {
   return [...Array(size).keys()].map((i) => i + startAt)
 }
-
 /**
 * arrayDifference: Removes values in arr1 that are in arr2
 * @param {Array} arr1: array to remove values from
@@ -229,7 +228,6 @@ const arrayDifference = ({ arr1, arr2 }) => {
     return c
   }).filter((c) => c !== null)
 }
-
 /**
 * binaryTournament: Runs a tournament between two random solutions and returns
   the fittest
@@ -248,7 +246,6 @@ const binaryTournament = (pop) => {
     throw new Error(`Binary tournament: ${e}`)
   }
 }
-
 /**
 * randomGaussian: generate a randomized gaussian number(normal distribution)
 * @param {Number} mean: mean value(expected distribution)
@@ -272,7 +269,6 @@ const randomGaussian = (mean=0.0, stdev=1.0) => {
     throw new Error(`Random gaussian: ${e}`)
   }
 }
-
 /**
 * pointMutation: randomly mutates 1 or more bits in a bitstring
 * @param {Array} bitstring: Individual in a population
@@ -300,6 +296,7 @@ module.exports = {
   euclid2D,
   euclideanDistance,
   objectiveFunction,
+  objectiveFunction2,
   oneMax,
   pointMutation,
   randomBitstring,

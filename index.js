@@ -21,27 +21,13 @@ const {
   differentialEvolutionSearch,
   evolutionaryProgrammingSearch,
   evolutionaryStrategySearch,
-  geneticAlgorithmSearch
+  executeLearningClassifier,
+  geneticAlgorithmSearch,
+  nonDominatedGASearch
 } = require('./src/evolutionary')
 
 const main = () => {
   try {
-    // Problem configuration
-    const problemSize = 2
-    const searchSpace = new Array(problemSize).fill([-5,5])
-    // Algorithm configuration
-    const maxGens = 2000
-    const popSize = 1000
-    const boutSize = 5
-
-    const best = evolutionaryProgrammingSearch({
-      maxGens,
-      searchSpace,
-      popSize,
-      boutSize
-    })
-
-    console.log(`Done. Solution: ${best.fitness}, Vector: ${best.vector}`)
 
     return 1
   } catch (e) {
@@ -258,4 +244,20 @@ main()
   })
 
   console.log(`Done. Solution: ${best.cost}, Vector: ${best.vector}`)
+
+  ** NON DOMINATED SORTING GENETIC ALGORITHM **
+  // Problem configuration
+  const problemSize = 1
+  const searchSpace = new Array(problemSize).fill([-10,10])
+  // Algorithm configuration
+  const maxGens = 500
+  const popSize = 100
+  const pCross = 0.80
+  const pop = nonDominatedGASearch({
+    searchSpace,
+    maxGens,
+    popSize,
+    pCross
+  })
+  console.log('Done!')
 */

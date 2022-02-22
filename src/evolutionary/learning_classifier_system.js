@@ -5,6 +5,7 @@ algorithm is to optimize payoff based on exposure to stimuli from a
 problem-specific environment. This is achieved by managing credit assignment
 for those rules that prove useful and searching for new rules and new
 variations on existing rules using an evolutionary process.
+Incomplete: 2.18.22
 *******************************************************************************/
 const { randomBitstring, randomInteger, arrayDifference,
   binaryTournament } = require('../utils')
@@ -131,14 +132,14 @@ const deleteFromPop = ({ pop, popSize, delThresh=20.0 }) => {
     }
     if (pop[index].num > 1) pop[index].num -= 1
     else pop = pop.filter((c,i) => i !== index)
-    return
+
   } catch (e) {
     throw new Error(`Delete from pop: ${e}`)
   }
 }
 /**
 * generateRandomClassifier: generates a random classifier
-* @param {Array} input: 0,1,#
+* @param {Array} input: random bitstring
 * @param {Array} actions: 0,1
 * @param {Number} gen: current generation
 * @param {Number} rate
@@ -146,9 +147,9 @@ const deleteFromPop = ({ pop, popSize, delThresh=20.0 }) => {
 **/
 const generateRandomClassifier = ({ input, actions, gen, rate=1.0/3.0 }) => {
   try {
-    let condition = input.map((in) => {
+    let condition = input.map((i) => {
       if (Math.random() < rate) return '#'
-      return in.toString()
+      return i.toString()
     })
     let action = actions[randomInteger(actions.length-1)]
     return newClassifier({ condition, action, gen })
@@ -158,7 +159,7 @@ const generateRandomClassifier = ({ input, actions, gen, rate=1.0/3.0 }) => {
 }
 /**
 * doesMatch: checks whether the input matches the condition
-* @param {Array} input: 0,1,#
+* @param {Array} input: random bitstring
 * @param {Array} condition: 0,1,#
 * @returns {Boolean} true or false based on match
 **/
@@ -192,7 +193,7 @@ const getActions = (pop) => {
 }
 /**
 * generateMatchSet: Generates a matching set of classifiers in a pop
-* @param {Array} input: 0,1,#
+* @param {Array} input: random bitstring
 * @param {Array} pop: population of candidate solutions
 * @param {Array} allActions: all actions from the pop
 * @param {Number} gen: current generation
@@ -201,7 +202,7 @@ const getActions = (pop) => {
 **/
 const generateMatchSet = ({ input, pop, allActions, gen, popSize }) => {
   try {
-    let matchSet = pop.filter((c) => doesMatch(input, c.condition))
+    let matchSet = pop.filter((c) => doesMatch({ input, condition: c.condition }))
     let actions = getActions(matchSet)
     do {
       let remaining = arrayDifference({ arr1: allActions, arr2: actions })
@@ -230,8 +231,7 @@ const generatePrediction = (matchSet) => {
     let pred = {}
     matchSet.map((classifier) => {
       let key = classifier.action
-      if (key === null) pred[key] = { sum: 0, count: 0, weight: 0 }
-      // may need to initialize sum & count vals
+      if (pred[key] === null || pred[key] === undefined) pred[key] = { sum: 0, count: 0, weight: 0 }
       pred[key].sum += classifier.pred * classifier.fitness
       pred[key].count += classifier.fitness
       return classifier
@@ -253,7 +253,9 @@ const generatePrediction = (matchSet) => {
 **/
 const selectAction = ({ predictions, pExplore=false }) => {
   try {
-    let keys = [ ...prediction.keys ].sort((a,b) => {
+    let keys = []
+    for (let key in predictions) keys.push(key)
+    keys = keys.sort((a,b) => {
       if (predictions[a].weight < predictions[b].weight) return -1
       if (predictions[a].weight > predictions[b].weight) return 1
       return 0
@@ -326,8 +328,8 @@ const updateFitness = ({ actionSet, minError=10, lRate=0.2, alpha=0.1,
 const canRunGeneticAlgorithm = ({ actionSet, gen, gaFreq }) => {
   try {
     if (actionSet.length <= 2) return false
-    const total = actionSet.reduce((acc, cur) => { return acc + c.lastTime * c.num },0)
-    const sum = actionSet.reduce((acc, cur) => { return acc + c.num },0)
+    const total = actionSet.reduce((acc, cur) => { return acc + cur.lastTime * cur.num },0)
+    const sum = actionSet.reduce((acc, cur) => { return acc + cur.num },0)
     if (gen - (total / sum) > gaFreq) return true
     return false
   } catch (e) {
@@ -338,7 +340,7 @@ const canRunGeneticAlgorithm = ({ actionSet, gen, gaFreq }) => {
 * mutation: determines if a mutation will take place based on rate
 * @param {Object} cl: current classifier
 * @param {Array} actionSet: set of actions from preditions
-* @param {Array} input: 0,1,#
+* @param {Array} input: random bitstring
 * @param {Number} rate: mutation rate
 * @returns
 **/
@@ -346,7 +348,8 @@ const mutation = ({ cl, actionSet, input, rate=0.04 }) => {
   try {
     for (let i = 0; i < cl.condition.length; i++) {
       if (Math.random() < rate) {
-        cl.condition[i] = (cl.condition[i] === '#') ? input[i] : '#'
+        if (cl.condition[i] === '#') cl.condition[i] = input[i]
+        else cl.condition[i] = '#'
       }
     }
     if (Math.random() < rate) {
@@ -376,25 +379,180 @@ const uniformCrossover = ({ parent1, parent2 }) => {
     throw new Error(`Uniform crossover: ${e}`)
   }
 }
+/**
+* insertInPop: Inserts a classifier to the population if conditions are not met
+* @param {Object} cla: classifier to be added
+* @param {Array} pop: population of candidate classifiers
+* @returns
+**/
+const insertInPop = ({ cla, pop }) => {
+  try {
+    for (let c of pop) {
+      if (cla.condition === c.condition && cla.action === c.action) {
+        c.num += 1
+        return
+      }
+    }
+    pop.push(cla)
+    return
+  } catch (e) {
+    throw new Error(`Insert in pop: ${e}`)
+  }
+}
+/**
+* crossover: crosses two parent classifier solutions
+* @param {Object} c1: classifier 1
+* @param {Object} c2: classifier 2
+* @param {Object} p1: parent classifier 1
+* @param {Object} p2: parent classifier 2
+* @returns
+**/
+const crossover = ({ c1, c2, p1, p2 }) => {
+  try {
+    c1.condition = uniformCrossover({
+      parent1: p1.condition,
+      parent2: p2.condition
+    })
+    c2.condition = uniformCrossover({
+      parent1: p1.condition,
+      parent2: p2.condition
+    })
+    c1.pred = (p1.pred + p2.pred) / 2.0
+    c2.pred = (p1.pred + p2.pred) / 2.0
+    c1.error = 0.25 * (p1.error + p2.error) / 2.0
+    c2.error = 0.25 * (p1.error + p2.error) / 2.0
+    c1.fitness = 0.1 * (p1.fitness + p2.fitness) / 2.0
+    c2.fitness = 0.1 * (p1.fitness + p2.fitness) / 2.0
+    return
+  } catch (e) {
+    throw new Error(`Crossover: ${e}`)
+  }
+}
+/**
+* runGA: runs the genetic algorithm on a set of classifers
+* @param {Array} actions: 0,1
+* @param {Array} pop: population of candidate classifiers
+* @param {Array} actionSet: set of classifiers from preditions
+* @param {Array} input: random bitstring
+* @param {Number} gen: current generation
+* @param {Number} popSize: size of population
+* @param {Number} cRate: crossover rate
+* @returns
+**/
+const runGA = ({ actions, pop, actionSet, input, gen, popSize, cRate=0.8 }) => {
+  try {
+    let p1 = binaryTournament(actionSet)
+    let p2 = binaryTournament(actionSet)
+    let c1 = copyClassifier(p1)
+    let c2 = copyClassifier(p2)
+    if (Math.random() < cRate) crossover({ c1, c2, p1, p2 })
+    mutation({ cl: c1, actionSet: actions, input })
+    insertInPop({ cla: c1, pop })
+    mutation({ cl: c2, actionSet: actions, input })
+    insertInPop({ cla: c2, pop })
 
+    while (pop.reduce((acc, cur) => { return acc + cur.num },0) > popSize) {
+      deleteFromPop({ pop, popSize })
+    }
+    return
+  } catch (e) {
+    throw new Error(`Run GA: ${e}`)
+  }
+}
+/**
+* trainModel: trains the classification model
+* @param {Number} popSize: size of population
+* @param {Number} maxGens: max number of generations
+* @param {Array} actions: 0,1
+* @param {Number} gaFreq: frequency of running the GA
+* @returns
+**/
+const trainModel = ({ popSize, maxGens, actions, gaFreq }) => {
+  try {
+    let pop = []
+    let perf = []
+    for (let gen = 0; gen < maxGens; gen++) {
+      let explore = gen % 2 === 0
+      let input = randomBitstring(6)
+      let matchSet = generateMatchSet({
+        input,
+        pop,
+        allActions: actions,
+        gen,
+        popSize
+      })
+      let predArray = generatePrediction(matchSet)
+      let action = selectAction({ predictions: predArray, pExplore: explore })
+      let reward = (targetFunction(input) === Number(action)) ? 1000 : 0
+      if (explore) {
+        let actionSet = matchSet.filter((c) => c.action === action)
+        updateSet({ actionSet, reward })
+        updateFitness({ actionSet })
+        if (canRunGeneticAlgorithm({ actionSet, gen, gaFreq })) {
+          for (let c of actionSet) c.lastTime = gen
+          runGA({ actions, pop, actionSet, input, gen, popSize })
+        }
+      } else {
+        let e = Math.abs(predArray[action].weight - reward)
+        let a = (reward === 1000) ? 1 : 0
+        perf.push({ error: e, correct: a })
+        if (perf.length >= 50) {
+          let err = Math.round(perf.reduce((acc, cur) => {
+            return acc + cur.error
+          },0) / perf.length)
+          let acc = perf.reduce((acc, cur) => {
+            return acc + cur.correct
+          },0) / perf.length
+          console.log(`> Generation: ${gen+1}, Size: ${pop.length}, Error: ${err}, Acc: ${acc}`)
+          perf = []
+        }
+      }
+    }
+    return pop
+  } catch (e) {
+    throw new Error(`Train model: ${e}`)
+  }
+}
+/**
+* testModel: Tests the classification model
+* @param {Number} system: trained model
+* @param {Number} numTrials: number of trials
+* @returns {Number} correct: number of correct trials
+**/
+const testModel = ({ system, numTrials=50 }) => {
+  try {
+    let correct = 0
+    for (let i = 0; i < numTrials; i++) {
+      let input = randomBitstring(6)
+      let matchSet = system.filter((c) => doesMatch({ input, condition: c.condition }))
+      let predArray = generatePrediction(matchSet)
+      let action = selectAction({ predictions: predArray, pExplore: false })
+      if (targetFunction(input) === Number(action)) correct += 1
+    }
+    console.log(`Done! Classified correctly: ${correct}/${numTrials}`)
+    return correct
+  } catch (e) {
+    throw new Error(`Test model: ${e}`)
+  }
+}
+/**
+* execute: executes the classifier
+* @param {Number} popSize: size of population
+* @param {Number} maxGens: max number of generations
+* @param {Array} actions: 0,1
+* @param {Number} gaFreq: frequency of running the GA
+* @returns {Array} system: trained classifier
+**/
+const executeLearningClassifier = ({ popSize, maxGens, actions, gaFreq }) => {
+  try {
+    let system = trainModel({ popSize, maxGens, actions, gaFreq })
+    let correct = testModel({ system })
+    return system
+  } catch (e) {
+    throw new Error(`Execute: ${e}`)
+  }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+module.exports = { executeLearningClassifier }
 
 /* END */
