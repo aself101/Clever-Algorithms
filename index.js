@@ -26,9 +26,23 @@ const {
   nonDominatedGASearch
 } = require('./src/evolutionary')
 
+const {
+  simulatedAnnealingSearch
+} = require('./src/physical')
+
 const main = () => {
   try {
-
+    // Algorithm configuration
+    const maxIter = 2000
+    const maxTemp = 100000
+    const tempChange = 0.98
+    const best = simulatedAnnealingSearch({
+      cities: BERLIN_52,
+      maxIter,
+      maxTemp,
+      tempChange
+    })
+    console.log(`Done. Best solution: ${best.cost}, V: ${best.vector}`)
     return 1
   } catch (e) {
     throw new Error(`Main() Stochastic: ${e}`)
