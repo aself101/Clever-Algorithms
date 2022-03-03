@@ -93,4 +93,4 @@ const simulatedAnnealingSearch = ({ cities, maxIter, maxTemp, tempChange }) => {
 
 module.exports = { simulatedAnnealingSearch }
 
-/* */
+/* END */

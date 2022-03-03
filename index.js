@@ -27,20 +27,19 @@ const {
 } = require('./src/evolutionary')
 
 const {
+  extremalOptimizationSearch,
   simulatedAnnealingSearch
 } = require('./src/physical')
 
 const main = () => {
   try {
     // Algorithm configuration
-    const maxIter = 2000
-    const maxTemp = 100000
-    const tempChange = 0.98
-    const best = simulatedAnnealingSearch({
+    const maxIter = 250
+    const tau = 1.8
+    const best = extremalOptimizationSearch({
       cities: BERLIN_52,
       maxIter,
-      maxTemp,
-      tempChange
+      tau
     })
     console.log(`Done. Best solution: ${best.cost}, V: ${best.vector}`)
     return 1
@@ -274,4 +273,17 @@ main()
     pCross
   })
   console.log('Done!')
+
+  ** SIMULATED ANNEALING **
+  // Algorithm configuration
+    const maxIter = 2000
+    const maxTemp = 100000
+    const tempChange = 0.98
+    const best = simulatedAnnealingSearch({
+      cities: BERLIN_52,
+      maxIter,
+      maxTemp,
+      tempChange
+    })
+    console.log(`Done. Best solution: ${best.cost}, V: ${best.vector}`)
 */
