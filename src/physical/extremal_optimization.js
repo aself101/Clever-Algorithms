@@ -1,11 +1,11 @@
 /*******************************************************************************
-Clever Algorithms, pg 175
-Extremal Optimization: The objective of the information processing strategy is 
-to iteratively identify the worst performing components of a given solution and 
-replace or swap them with other components. This is achieved through the allocation 
-of cost to the components of the solution based on their contribution to the 
-overall cost of the solution in the problem domain. Once components are assessed 
-they can be ranked and the weaker components replaced or switched with a randomly 
+Clever Algorithms, pg 181
+Extremal Optimization: The objective of the information processing strategy is
+to iteratively identify the worst performing components of a given solution and
+replace or swap them with other components. This is achieved through the allocation
+of cost to the components of the solution based on their contribution to the
+overall cost of the solution in the problem domain. Once components are assessed
+they can be ranked and the weaker components replaced or switched with a randomly
 selected component.
 Problem: TSP
 *******************************************************************************/
@@ -33,7 +33,7 @@ const cost = ({ permutation, cities }) => {
 * @param {Number} cityNumber: index of a city
 * @param {Array} cities: array of all available cities(indexes)
 * @param {Array} ignore: city routes to ignore
-* @returns {Array}: neighbors: sorted by distance 
+* @returns {Array}: neighbors: sorted by distance
 * @called
 **/
 const calculateNeighborRank = ({ cityNumber, cities, ignore=[] }) => {
@@ -41,9 +41,9 @@ const calculateNeighborRank = ({ cityNumber, cities, ignore=[] }) => {
     let neighbors = []
     cities.map((city, i) => {
       if (i === cityNumber || ignore.includes(i)) return city
-      let neighbor = { 
+      let neighbor = {
         number: i,
-        distance: euclid2D({ c1: cities[cityNumber], c2: city }) 
+        distance: euclid2D({ c1: cities[cityNumber], c2: city })
       }
       neighbors.push(neighbor)
       return city
@@ -114,10 +114,10 @@ const calculateCityFitnesses = ({ cities, permutation }) => {
     cities.map((city, i) => {
       let cityFitness = {
         number: i,
-        fitness: calculateCityFitness({ 
-          permutation, 
-          cityNumber: i, 
-          cities 
+        fitness: calculateCityFitness({
+          permutation,
+          cityNumber: i,
+          cities
         })
       }
       cityFitnesses.push(cityFitness)
@@ -180,11 +180,11 @@ const probabilisticSelection = ({ orderedComponents, tau, exclude=[] }) => {
     })
     let selectedCity = null
     do {
-      selectedCity = makeSelection({ 
-        components: orderedComponents, 
-        sumProbability: sum 
+      selectedCity = makeSelection({
+        components: orderedComponents,
+        sumProbability: sum
       })
-    } while (exclude.includes(selectedCity)) 
+    } while (exclude.includes(selectedCity))
     return selectedCity
   } catch (e) {
     throw new Error(`Probilistic selection: ${e}`)
@@ -251,26 +251,26 @@ const getLongEdges = ({ edges, neighborDistances }) => {
 const createNewPerm = ({ cities, tau, perm }) => {
   try {
     let cityFitnesses = calculateCityFitnesses({ cities, permutation: perm })
-    let selectedCity = probabilisticSelection({ 
+    let selectedCity = probabilisticSelection({
       orderedComponents: cityFitnesses.reverse(),
       tau
     })
-    let edges = getEdgesForCity({ 
-      cityNumber: selectedCity, 
-      permutation: perm 
+    let edges = getEdgesForCity({
+      cityNumber: selectedCity,
+      permutation: perm
     })
-    let neighbors = calculateNeighborRank({ 
-      cityNumber: selectedCity, 
-      cities 
+    let neighbors = calculateNeighborRank({
+      cityNumber: selectedCity,
+      cities
     })
     let newNeighbor = probabilisticSelection({
       orderedComponents: neighbors,
       tau,
       exclude: edges
     })
-    let longEdge = getLongEdges({ 
-      edges, 
-      neighborDistances: neighbors 
+    let longEdge = getLongEdges({
+      edges,
+      neighborDistances: neighbors
     })
     return varyPermuation({
       permutation: perm,
@@ -296,12 +296,12 @@ const extremalOptimizationSearch = ({ cities, maxIter, tau }) => {
     current.cost = cost({ permutation: current.vector, cities })
     let best = current
     for (let i = 0; i < maxIter; i++) {
-      let candidate = { 
+      let candidate = {
         vector: createNewPerm({
           cities,
           tau,
           perm: current.vector
-        }) 
+        })
       }
       candidate.cost = cost({ permutation: candidate.vector, cities })
       current = candidate

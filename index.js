@@ -28,20 +28,30 @@ const {
 
 const {
   extremalOptimizationSearch,
+  harmonySearch,
   simulatedAnnealingSearch
 } = require('./src/physical')
 
 const main = () => {
   try {
+    // Problem configuration
+    const problemSize = 3
+    const bounds = new Array(problemSize).fill([-5,5])
     // Algorithm configuration
-    const maxIter = 250
-    const tau = 1.8
-    const best = extremalOptimizationSearch({
-      cities: BERLIN_52,
+    const memSize = 20
+    const considRate = 0.95
+    const adjustRate = 0.7
+    const range = 0.05
+    const maxIter = 500
+    const best = harmonySearch({
+      bounds,
       maxIter,
-      tau
+      memSize,
+      considRate,
+      adjustRate,
+      range
     })
-    console.log(`Done. Best solution: ${best.cost}, V: ${best.vector}`)
+    console.log(`Done! Solution: F=${best.fitness}, S=${best.vector}`)
     return 1
   } catch (e) {
     throw new Error(`Main() Stochastic: ${e}`)
@@ -284,6 +294,17 @@ main()
       maxIter,
       maxTemp,
       tempChange
+    })
+    console.log(`Done. Best solution: ${best.cost}, V: ${best.vector}`)
+  
+    ** EXTREMAL OPTIMIZATION ** // Worst one yet
+    // Algorithm configuration
+    const maxIter = 250
+    const tau = 1.8
+    const best = extremalOptimizationSearch({
+      cities: BERLIN_52,
+      maxIter,
+      tau
     })
     console.log(`Done. Best solution: ${best.cost}, V: ${best.vector}`)
 */
