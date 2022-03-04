@@ -44,6 +44,9 @@ Seeking a minimum set of values given an objective function. See utils.js.
 * [Evolution Strategies](src/evolutionary/evolution_strategies.js)
 * [Differential Evolution](src/evolutionary/differential_evolution.js)
 
+#### Physical
+* [Harmony Search](src/physical/harmony_search.js)
+
 ### Binary String Optimization - One Max
 Maximization problem to prepare a string of all '1' bits.
 
@@ -68,6 +71,10 @@ Uses the Berlin52 data set.
 * [Scatter Search](src/stochastic/scatter_search.js)
 * [Tabu Search](src/stochastic/tabu_search.js)
 * [Reactive Tabu Search](src/stochastic/reactive_tabu_search.js)
+
+#### Physical
+* [Simulated Annealing](src/physical/simulated_annealing.js)
+* [Extremal Optimization](src/physical/extremal_optimization.js)
 
 ## Usage
 ```javascript
@@ -97,6 +104,9 @@ Inspired by evolution by means of natural selection
 
 ### Physical
 Inspired by physical and social systems
+* [Simulated Annealing](src/physical/simulated_annealing.js)
+* [Extremal Optimization](src/physical/extremal_optimization.js)
+* [Harmony Search](src/physical/harmony_search.js)
 
 ### Probabilistic
 Focuses on methods that build models and estimate distributions in search domains

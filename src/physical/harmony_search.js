@@ -10,7 +10,7 @@ or assigned randomly within the bounds of the problem. The memory of
 candidate solutions is initially random, and a greedy acceptance criteria
 is used to admit new candidate solutions only if they have an improved
 objective value, replacing an existing member.
-Problem: TSP
+Problem: Function optimization
 *******************************************************************************/
 const { objectiveFunction, randomVector, randomInBounds,
   randomInteger } = require('../utils')
