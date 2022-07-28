@@ -27,6 +27,7 @@ const {
 } = require('./src/evolutionary')
 
 const {
+  culturalSearch,
   extremalOptimizationSearch,
   harmonySearch,
   simulatedAnnealingSearch
@@ -35,21 +36,17 @@ const {
 const main = () => {
   try {
     // Problem configuration
-    const problemSize = 3
-    const bounds = new Array(problemSize).fill([-5,5])
+    const problemSize = 2
+    const searchSpace = new Array(problemSize).fill([-5,5])
     // Algorithm configuration
-    const memSize = 20
-    const considRate = 0.95
-    const adjustRate = 0.7
-    const range = 0.05
-    const maxIter = 500
-    const best = harmonySearch({
-      bounds,
-      maxIter,
-      memSize,
-      considRate,
-      adjustRate,
-      range
+    const maxGens = 200
+    const popSize = 100
+    const numAccepted = Math.round(popSize * 0.20)
+    const best = culturalSearch({
+      maxGens,
+      searchSpace,
+      popSize,
+      numAccepted
     })
     console.log(`Done! Solution: F=${best.fitness}, S=${best.vector}`)
     return 1
@@ -307,4 +304,24 @@ main()
       tau
     })
     console.log(`Done. Best solution: ${best.cost}, V: ${best.vector}`)
+
+    ** HARMONY SEARCH **
+    // Problem configuration
+    const problemSize = 3
+    const bounds = new Array(problemSize).fill([-5,5])
+    // Algorithm configuration
+    const memSize = 20
+    const considRate = 0.95
+    const adjustRate = 0.7
+    const range = 0.05
+    const maxIter = 500
+    const best = harmonySearch({
+      bounds,
+      maxIter,
+      memSize,
+      considRate,
+      adjustRate,
+      range
+    })
+    console.log(`Done! Solution: F=${best.fitness}, S=${best.vector}`)
 */
